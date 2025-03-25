@@ -1,13 +1,13 @@
 from fastapi import FastAPI, File, UploadFile
 from PIL import Image
 import numpy as np
-import tensorflow.lite as tflite
+import tensorflow as tf
 import io
 
 app = FastAPI()
 
 # Load the TensorFlow Lite model
-interpreter = tflite.Interpreter(model_path="mobilenet_leaf_model.tflite")
+interpreter = tf.lite.Interpreter(model_path="mobilenet_leaf_model.tflite")
 interpreter.allocate_tensors()
 
 # Get input/output details

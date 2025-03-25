@@ -1,5 +1,6 @@
-fastapi
-uvicorn
-pillow
-numpy
-tflite-runtime
+fastapi==0.109.0
+pillow==9.5.0
+numpy==1.23.5
+tensorflow==2.15.0
+python-multipart==0.0.9
+uvicorn==0.27.0
