@@ -14,6 +14,9 @@ interpreter.allocate_tensors()
 input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
 
+# Define class labels (modify based on your dataset)
+class_labels = {0: "Neem", 1: "Tulsi", 2: "Mint", 3: "Basil", 4: "Coriander"}
+
 def preprocess_image(image_bytes):
     # Open the image
     image = Image.open(io.BytesIO(image_bytes))
@@ -27,10 +30,6 @@ def preprocess_image(image_bytes):
 
     # Convert to numpy array and normalize
     image = np.array(image, dtype=np.float32) / 255.0
-
-    # Print input details for debugging
-    print("Input details shape:", input_details[0]['shape'])
-    print("Image shape before inference:", image.shape)
 
     return image
 
@@ -48,11 +47,7 @@ async def predict(file: UploadFile = File(...)):
 
     # Ensure image matches input tensor shape
     input_shape = input_details[0]['shape']
-
-    # Correctly compare shapes
     if not np.array_equal(image.shape, input_shape):
-        print(f"Reshaping image from {image.shape} to {input_shape}")
-        # Reshape to match exact input shape
         image = image.reshape(input_shape)
 
     # Run inference
@@ -61,15 +56,12 @@ async def predict(file: UploadFile = File(...)):
 
     # Get output
     output = interpreter.get_tensor(output_details[0]['index'])
-    predicted_class = np.argmax(output)
+    predicted_index = np.argmax(output)
 
-    return {"prediction": int(predicted_class)}
+    # Get the class name from the dictionary
+    predicted_class_name = class_labels.get(predicted_index, "Unknown")
 
-# Optional: Add error handling and logging
-@app.on_event("startup")
-async def startup_event():
-    print("Input details:", input_details)
-    print("Output details:", output_details)
+    return {"prediction": predicted_class_name}
 
 @app.get("/health")
 async def health_check():
