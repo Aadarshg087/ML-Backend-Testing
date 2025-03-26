@@ -3,8 +3,21 @@ from PIL import Image
 import numpy as np
 import tensorflow as tf
 import io
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+
+# Enable CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins (change this to specific domains in production)
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
+
+
 
 # Load the TensorFlow Lite model
 interpreter = tf.lite.Interpreter(model_path="mobilenet_leaf_model.tflite")
@@ -61,8 +74,8 @@ async def predict(file: UploadFile = File(...)):
     # Get the class name from the dictionary
     predicted_class_name = class_labels.get(predicted_index, "Unknown")
 
-    return {"prediction": predicted_class_name}
 
+    return {"prediction": predicted_class_name}
 @app.get("/health")
 async def health_check():
     return {"status": "healthy"}
