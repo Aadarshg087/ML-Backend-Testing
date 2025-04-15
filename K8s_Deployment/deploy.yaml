@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-backend-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ml-backend
+  template:
+    metadata:
+      labels:
+        app: ml-backend
+    spec:
+      containers:
+        - name: ml-backend
+          image: aadarshg619/ml-backend:latest
+          ports:
+            - containerPort: 8000
