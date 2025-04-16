@@ -15,7 +15,7 @@ def preprocess_image(image_bytes):
     image = torch.tensor(image).permute(2, 0, 1).unsqueeze(0) / 255.0  # Normalize
     return image
 
-@app.post("/predict/")
+@app.post("api/predict/")
 async def predict(file: UploadFile = File()):
     image_bytes = await file.read()
     image_tensor = preprocess_image(image_bytes)
