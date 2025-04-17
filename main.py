@@ -28,7 +28,7 @@ input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
 
 # Define class labels (modify based on your dataset)
-class_labels = {0: "Neem", 1: "Tulsi", 2: "Mint", 3: "Basil", 4: "Coriander"}
+class_labels = {0: "Arjun Leaf", 1: "Tulsi", 2: "Neem", 3: "Basil", 4: "Curry Leaf"}
 
 def preprocess_image(image_bytes):
     # Open the image
