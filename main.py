@@ -46,7 +46,7 @@ def preprocess_image(image_bytes):
 
     return image
 
-@app.post("/predict/")
+@app.post("/api/predict")
 async def predict(file: UploadFile = File(...)):
     # Read image bytes
     image_bytes = await file.read()
@@ -76,6 +76,6 @@ async def predict(file: UploadFile = File(...)):
 
 
     return {"prediction": predicted_class_name}
-@app.get("api/health")
+@app.get("/api/health")
 async def health_check():
     return {"status": "healthy"}
